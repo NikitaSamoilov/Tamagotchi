@@ -1,7 +1,9 @@
 package base;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+@XmlRootElement
 public class Param<T> implements Serializable {
     private String paramName;
     private T value;

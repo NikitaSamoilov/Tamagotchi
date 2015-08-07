@@ -3,15 +3,19 @@ package console_tester;
 import base.Param;
 import base.Tamagotchi;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, JAXBException {
         Tamagotchi tamagotchi = new Tamagotchi();
+
+        Param<String> nameParam = new Param<String>();
+        nameParam.setParamName("name");
+        nameParam.setValue("Toma");
 
         Param<Integer> ageParam = new Param<Integer>();
         ageParam.setParamName("age");
@@ -20,6 +24,7 @@ public class Main {
         ageParam.setMinValue(Integer.valueOf(0));
         ageParam.setAdequeteValue(null);
 
+        tamagotchi.addParameter(nameParam);
         tamagotchi.addParameter(ageParam);
         System.out.println(tamagotchi);
 
@@ -28,5 +33,14 @@ public class Main {
         objectOutputStream.writeObject(tamagotchi);
         objectOutputStream.flush();
         objectOutputStream.close();
+
+        JAXBContext jaxbContext = JAXBContext.newInstance(Tamagotchi.class);
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        StringWriter stringWriter = new StringWriter();
+        marshaller.marshal(tamagotchi, stringWriter);
+        stringWriter.close();
+        System.out.println(stringWriter.toString());
     }
 }

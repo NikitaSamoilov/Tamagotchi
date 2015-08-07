@@ -1,10 +1,14 @@
 package base;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@XmlRootElement
 public class Tamagotchi implements Serializable {
+    @XmlElement
     protected Map<String, Param<?>> params;
 
     protected Map<String, Param<?>> getMap() {
